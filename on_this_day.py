@@ -24,10 +24,8 @@ url = 'https://en.wikipedia.org/wiki/Main_Page'
 
 def get_title(url):
     response = requests.get(url)
-
     try:
         if response.status_code == 200:
-
             soup = BeautifulSoup(response.content, 'html.parser')
             title = soup.find(id='mp-otd-h2')
 
@@ -37,3 +35,18 @@ def get_title(url):
         print(f'Failed: {e}')
 
 # print(get_title(url))
+
+def get_paragraph(url):
+    response = requests.get(url)
+    try:
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'html.parser')
+            otd = soup.find(id='mp-otd')
+            para = otd.find('p')
+            return para.text
+
+    except Exception as e:
+        print(f'Failed: {e}')
+
+get_paragraph(url)
+
