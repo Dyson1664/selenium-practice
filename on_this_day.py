@@ -18,7 +18,7 @@ def scrape_on_this_day_body(url):
         'Error with connection'
 
 
-url = 'https://en.wikipedia.org/wiki/Main_Page'
+# url = 'https://en.wikipedia.org/wiki/Main_Page'
 # scrape_on_this_day_body(url)
 
 
@@ -48,7 +48,7 @@ def get_paragraph(url):
     except Exception as e:
         print(f'Failed: {e}')
 
-get_paragraph(url)
+# get_paragraph(url)
 
 import urllib
 from urllib.parse import urljoin
@@ -71,15 +71,58 @@ def get_picture(url):
 
 
 import urllib.request
-#
-# print(get_picture(url))
-#
+
 def download_image(url, save_as):
     image_url = get_picture(url)
     urllib.request.urlretrieve(image_url, save_as)
 
-download_image(url, 'IMG_.png')
+import os
+# os.makedirs(save_path, exist_ok=True)
+
+def download_image_2_folder_flask(url):
+    image_url = get_picture(url)
+    save_path = r'C:\Users\PC\Desktop\practice\static\images'
+    save_as = os.path.join(save_path, 'image.jpg')
+
+    urllib.request.urlretrieve(image_url, save_as)
+
+
+# download_image(url, 'IMG_.png')
+# path = r"C:\Users\PC\Desktop\practice\IMG_.png"
+def fetch_image(path):
+    with open(path, 'rb') as file:
+        content = file.read()
+        return content
+
+
+#now display it on a flask website
+
+from flask import Flask, request, url_for, render_template
+
+app = Flask('__name__')
+
+app.secret_key = 'iewe678902345h#$@()*:><'
 
 
 
+@app.route('/')
+def wiki():
+    url = 'https://en.wikipedia.org/wiki/Main_Page'
+    # path = r"C:\Users\PC\Desktop\practice\IMG_.png"
 
+    wiki_title = get_title(url)
+    paragraph = get_paragraph(url)
+    bullets = scrape_on_this_day_body(url)
+
+    download_image_2_folder_flask(url)
+    print(wiki_title)
+
+    return render_template('wiki.html', wiki_title=wiki_title, paragraph=paragraph, bullets=bullets)
+
+
+
+if __name__ == ('__main__'):
+    app.run(debug=True)
+
+#need to delete pic and loop for every day. Add some styling. Check if thats the best way to display a pic
+#Bound to be a faster way of only scraping once
