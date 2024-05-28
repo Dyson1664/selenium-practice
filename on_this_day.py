@@ -50,3 +50,36 @@ def get_paragraph(url):
 
 get_paragraph(url)
 
+import urllib
+from urllib.parse import urljoin
+
+def get_picture(url):
+    response = requests.get(url)
+    try:
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.content, 'html.parser')
+
+            image_div = soup.find(id='mp-otd-img')
+            img_tag = image_div.find('img')
+            src = img_tag.get('src')
+            if src:
+                src_url = urljoin(url, src)
+                return src_url
+
+    except Exception as e:
+        print(f'Failed: {e}')
+
+
+import urllib.request
+#
+# print(get_picture(url))
+#
+def download_image(url, save_as):
+    image_url = get_picture(url)
+    urllib.request.urlretrieve(image_url, save_as)
+
+download_image(url, 'IMG_.png')
+
+
+
+
