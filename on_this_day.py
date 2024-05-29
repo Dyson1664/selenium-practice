@@ -120,9 +120,64 @@ def wiki():
     return render_template('wiki.html', wiki_title=wiki_title, paragraph=paragraph, bullets=bullets)
 
 
+def save_file(file_name ,info):
+    with open(file_name, 'w') as file:
+        file.write(info)
+
+def delete_file(file_name):
+    if os.path.exists(file_name):
+        os.remove(file_name)
+def read_file(file_name):
+    if os.path.exists(file_name):
+        with open(file_name, 'r') as file:
+            return file.read()
+
+
+import datetime
+
+now = datetime.datetime.now()
+print(now)
+import time
+
+url = 'https://en.wikipedia.org/wiki/Main_Page'
+old = scrape_on_this_day_body(url)
+save_file('html', old)
+
+while True:
+    url = 'https://en.wikipedia.org/wiki/Main_Page'
+    try:
+        old = scrape_on_this_day_body(url)
+        if old:
+
+            time.sleep(3600)
+            new = scrape_on_this_day_body(url)
+            read = read_file('html')
+        else:
+            pass
+
+    except Exception as e:
+        print(f'Unable to scrape website and read file: {e}')
+
+    try:
+        if new and new != read:
+            print('run function')
+            url_for('wiki')
+            delete_file(r"C:\Users\PC\Desktop\practice\html.txt")
+            save_file('html', new)
+
+        else:
+            continue
+
+    except Exception as e:
+        print(e)
+
+
+
 
 if __name__ == ('__main__'):
     app.run(debug=True)
+
+
 
 #need to delete pic and loop for every day. Add some styling. Check if thats the best way to display a pic
 #Bound to be a faster way of only scraping once
