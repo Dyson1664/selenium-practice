@@ -14,17 +14,19 @@
 <div class="container">
     <h1>{{ wiki_title }}</h1>
 {#<!--    <img src="{{ url_for('downloaded_image') }}" alt="Downloaded Image">-->#}
+    <figure>
     <img
       src="{{ url_for('static', filename='images/image.jpg') }}"
   class="image"
 />
-    <h2>{{ pic_title }}</h2>
-    <p>{{ paragraph }}</p>
+        <figcaption>{{ pic_title }}</figcaption>
+
+        </figure>
+    <h2>{{ paragraph }}</h2>
 
     {% for bullet in bullets %}
-
     <li>{{ bullet.text }}</li>
-    
+
     {% endfor %}
 </div>
 </body>
