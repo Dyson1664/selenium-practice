@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 
+flag = False
+
 def scrape_on_this_day_body(url):
     response = requests.get(url)
     if response.status_code == 200:
@@ -18,7 +20,7 @@ def scrape_on_this_day_body(url):
         'Error with connection'
 
 
-# url = 'https://en.wikipedia.org/wiki/Main_Page'
+url = 'https://en.wikipedia.org/wiki/Main_Page'
 # scrape_on_this_day_body(url)
 
 
@@ -29,7 +31,14 @@ def get_title(url):
             soup = BeautifulSoup(response.content, 'html.parser')
             title = soup.find(id='mp-otd-h2')
 
-            return title.text
+            image_div = soup.find(id='mp-otd-img')
+            a_tag = image_div.find('a')
+
+            img_title = a_tag.get('title') if a_tag else None
+
+
+
+            return title.text, img_title
 
     except Exception as e:
         print(f'Failed: {e}')
@@ -60,8 +69,10 @@ def get_picture(url):
             soup = BeautifulSoup(response.content, 'html.parser')
 
             image_div = soup.find(id='mp-otd-img')
+
             img_tag = image_div.find('img')
-            src = img_tag.get('src')
+            src = img_tag.get('src') if img_tag else None
+
             if src:
                 src_url = urljoin(url, src)
                 return src_url
@@ -107,71 +118,117 @@ app.secret_key = 'iewe678902345h#$@()*:><'
 
 @app.route('/')
 def wiki():
+    global flag
+
     url = 'https://en.wikipedia.org/wiki/Main_Page'
     # path = r"C:\Users\PC\Desktop\practice\IMG_.png"
 
-    wiki_title = get_title(url)
+    wiki_title, pic_title = get_title(url)
     paragraph = get_paragraph(url)
     bullets = scrape_on_this_day_body(url)
 
     download_image_2_folder_flask(url)
     print(wiki_title)
 
-    return render_template('wiki.html', wiki_title=wiki_title, paragraph=paragraph, bullets=bullets)
+    return render_template('wiki.html', wiki_title=wiki_title, pic_title=pic_title, paragraph=paragraph, bullets=bullets)
+
+# def total_scraped_data():
+#
+# def save_file(file_name ,info):
+#     with open(file_name, 'w') as file:
+#         file.write(info)
+#
+# def delete_file(file_name):
+#     if os.path.exists(file_name):
+#         os.remove(file_name)
+# def read_file(file_name):
+#     if os.path.exists(file_name):
+#         with open(file_name, 'r') as file:
+#             return file.read()
+#
+# def check_update_flag():
+#     if os.path.exists('update_flag.txt'):
+#         os.remove('update_flag.txt')
+#         return True
+#     return False
+
+from apscheduler.schedulers.background import BackgroundScheduler
+
+# def scheduer(url):
+#     new_html = scrape_on_this_day_body(url)
+#
+#     read_html = read_file('html')
+#
+#     if new_html and new_html != read_html:
+#     #call flask page to be updated
+#         delete_file('html')
+#         save_file('html', new_html)
+#         global flag
 
 
-def save_file(file_name ,info):
-    with open(file_name, 'w') as file:
-        file.write(info)
 
-def delete_file(file_name):
-    if os.path.exists(file_name):
-        os.remove(file_name)
-def read_file(file_name):
-    if os.path.exists(file_name):
-        with open(file_name, 'r') as file:
-            return file.read()
+#need to find the best way to refresh the homepage after condition is met. Maybe: https://python-forum.io/thread-37977.html
 
+# save title, paragraph, bullets
+# read it to return the 3
 
-import datetime
-
-now = datetime.datetime.now()
-print(now)
-import time
-
-url = 'https://en.wikipedia.org/wiki/Main_Page'
-old = scrape_on_this_day_body(url)
-save_file('html', old)
-
-while True:
-    url = 'https://en.wikipedia.org/wiki/Main_Page'
-    try:
-        old = scrape_on_this_day_body(url)
-        if old:
-
-            time.sleep(3600)
-            new = scrape_on_this_day_body(url)
-            read = read_file('html')
-        else:
-            pass
-
-    except Exception as e:
-        print(f'Unable to scrape website and read file: {e}')
-
-    try:
-        if new and new != read:
-            print('run function')
-            url_for('wiki')
-            delete_file(r"C:\Users\PC\Desktop\practice\html.txt")
-            save_file('html', new)
-
-        else:
-            continue
-
-    except Exception as e:
-        print(e)
+# if scraped = read:
+#pass
+#else:
+#       change flag
 
 
+#route
+#if flag:
+#     call scraper function again
+#else:
+#     return read file
+
+
+
+
+#
+#
+#
+# import datetime
+#
+# now = datetime.datetime.now()
+# print(now)
+# import time
+#
+# url = 'https://en.wikipedia.org/wiki/Main_Page'
+# old = scrape_on_this_day_body(url)
+# save_file('html', old)
+#
+# while True:
+#     url = 'https://en.wikipedia.org/wiki/Main_Page'
+#     try:
+#         old = scrape_on_this_day_body(url)
+#         if old:
+#
+#             time.sleep(3600)
+#             new = scrape_on_this_day_body(url)
+#             read = read_file('html')
+#         else:
+#             pass
+#
+#     except Exception as e:
+#         print(f'Unable to scrape website and read file: {e}')
+#
+#     try:
+#         if new and new != read:
+#             print('run function')
+#             url_for('wiki')
+#             delete_file(r"C:\Users\PC\Desktop\practice\html.txt")
+#             save_file('html', new)
+#
+#         else:
+#             continue
+#
+#     except Exception as e:
+#         print(e)
+#
+#
 
 
 if __name__ == ('__main__'):
