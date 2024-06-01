@@ -157,14 +157,65 @@ print(l3)
 
 
 
+list1 = [10, 20, 30, 40]
+list2 = [100, 200, 300, 400]
+list2.reverse()
+
+l3 = zip(list1, list2)
+for nums in l3:
+    print(nums)
+
+list1 = [10, 20, 30, 40]
+list2 = [100, 200, 300, 400]
+p = []
+for x, y in zip(list1, list2[::-1]):
+    print(x, y)
+    p.append(x)
+print(p)
 
 
 
-# for num in sample_list:
-#     if num not in l:
-#         l.append(num)
-#
-# m = max(l)
-# s = min(l)
-# print(m, s)
+list1 = ["Mike", "", "Emma", "Kelly", "", "Brad"]
 
+k = []
+for i in list1:
+    if len(i) > 0:
+        k.append(i)
+print(k)
+
+
+
+list1 = [10, 20, [300, 400, [5000, 6000], 500], 30, 40]
+
+list1[2][2].append(7000)
+
+print(list1)
+list1 = ["a", "b", ["c", ["d", "e", ["f", "g"], "k"], "l"], "m", "n"]
+
+# sub list to add
+sub_list = ["h", "i", "j"]
+#['a', 'b', ['c', ['d', 'e', ['f', 'g', 'h', 'i', 'j'], 'k'], 'l'], 'm', 'n']
+list1[2][1][2].extend(sub_list)
+
+print(list1)
+
+list1 = [5, 10, 15, 20, 25, 50, 20]
+
+# a = list1.index(20)
+# list1.remove(20)
+# list1.insert(a, 200)
+# print(list1)
+
+list1[3] = 200
+print(list1)
+
+
+list1 = [5, 20, 15, 20, 25, 50, 20]
+for num in list1:
+    if num == 20:
+        list1.remove(20)
+print(list1)
+
+
+s = [num for num in list1 if num != 20]
+print(s)
