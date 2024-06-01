@@ -219,3 +219,11 @@ print(list1)
 
 s = [num for num in list1 if num != 20]
 print(s)
+
+
+#dictionaries
+keys = ['Ten', 'Twenty', 'Thirty']
+values = [10, 20, 30]
+dict = dict(zip(keys, values))
+print(dict)
+
