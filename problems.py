@@ -262,3 +262,59 @@ defaults = {"designation": 'Developer', "salary": 8000}
 dict = dict.fromkeys(employees, defaults)
 
 print(dict)
+
+sample_dict = {
+    "name": "Kelly",
+    "age": 25,
+    "salary": 8000,
+    "city": "New york"}
+
+# Keys to extract
+keys = ["name", "salary"]
+dict = {}
+
+for key in keys:
+    dict.update({key: sample_dict.get(key)})
+
+print(dict)
+
+sample_dict = {
+    "name": "Kelly",
+    "age": 25,
+    "salary": 8000,
+    "city": "New york"
+}
+
+# Keys to remove
+keys = ["name", "salary"]
+
+for key in keys:
+    sample_dict.pop(key)
+
+print(sample_dict)
+
+sample_dict = {'a': 100, 'b': 200, 'c': 300}
+
+for v in sample_dict.values():
+    if v == 200:
+        print('yep here')
+
+
+sample_dict = {
+  "name": "Kelly",
+  "age":25,
+  "salary": 8000,
+  "city": "New york"
+}
+
+sample_dict['Location'] = sample_dict.pop('city')
+print(sample_dict)
+
+
+
+sample_dict = {
+    'emp1': {'name': 'Jhon', 'salary': 7500},
+    'emp2': {'name': 'Emma', 'salary': 8000},
+    'emp3': {'name': 'Brad', 'salary': 500}
+}
+
