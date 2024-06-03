@@ -317,4 +317,17 @@ sample_dict = {
     'emp2': {'name': 'Emma', 'salary': 8000},
     'emp3': {'name': 'Brad', 'salary': 500}
 }
+# {
+#    'emp1': {'name': 'Jhon', 'salary': 7500},
+#    'emp2': {'name': 'Emma', 'salary': 8000},
+#    'emp3': {'name': 'Brad', 'salary': 8500}
+# }
 
+sample_dict['emp3']['salary'] = 8500
+print(sample_dict)
+
+j = 1
+for num in range(1, 6):
+    for i in range(j):
+        j += 1
+        print(num, i)
